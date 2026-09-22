@@ -32,10 +32,16 @@ def apply(theme: dict):
 
 def save_light_dark(fig_fn, path_stem, results_dir="results"):
     """Call fig_fn(theme) to draw onto the current figure/axes, once per
-    theme, saving <path_stem>_light.svg and <path_stem>_dark.svg."""
+    theme, saving <path_stem>_light.svg and <path_stem>_dark.svg.
+
+    Output is byte-for-byte reproducible: the SVG timestamp is dropped and
+    element ids use a fixed hash salt, so CI can regenerate results/ and
+    commit it without producing a spurious diff on every run."""
     import matplotlib.pyplot as plt
+    mpl.rcParams["svg.hashsalt"] = "reproducible"
     for name, theme in [("light", LIGHT), ("dark", DARK)]:
         apply(theme)
         fig = fig_fn(theme)
-        fig.savefig(f"{results_dir}/{path_stem}_{name}.svg", format="svg")
+        fig.savefig(f"{results_dir}/{path_stem}_{name}.svg", format="svg",
+                    metadata={"Date": None})
         plt.close(fig)
