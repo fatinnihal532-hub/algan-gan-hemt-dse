@@ -2,7 +2,7 @@
 Polarization-induced 2DEG charge-control model.
 
 Implements the linearized charge-control relation of Ambacher et al.
-(1999), Eq. (8)-(10):
+(J. Appl. Phys. 85, 3222, 1999):
 
     ns(Vg) = sigma(x)/q
              - eps0*eps_r/(q^2*(d+dd)) * (q*phib + EF - dEc)
@@ -25,11 +25,12 @@ from dataclasses import dataclass
 from .materials import AlGaN, EPS0, Q, HBAR, M0, M_STAR_GAN
 
 
-DELTA_D_M = 0.5e-9   # eps0/Cbarrier "Zener/quantization" fudge distance (m);
-                     # a small effective barrier-thickness offset commonly
-                     # added in the Ambacher model to approximately absorb
-                     # the finite spread of the 2DEG wavefunction into the
-                     # buffer. Kept fixed and small relative to d.
+DELTA_D_M = 0.5e-9   # effective-thickness offset (m): the 2DEG charge
+                     # centroid sits a short distance below the AlGaN/GaN
+                     # interface, not exactly at it, so the gate-to-channel
+                     # capacitance is eps/(d + dd) rather than eps/d. A fixed
+                     # 0.5 nm is a representative value, kept small relative
+                     # to d; it is a modelling choice, not a fitted one.
 
 
 @dataclass(frozen=True)
@@ -80,7 +81,7 @@ class BarrierStack:
 
     def threshold_voltage_V(self) -> float:
         """Analytical Vth: the gate bias at which ns -> 0 and EF -> 0
-        simultaneously (Ambacher 1999, Eq. 10)."""
+        simultaneously (the ns = 0 limit of the relation above)."""
         d_eff = self.thickness_m + DELTA_D_M
         sigma = self.alloy.total_polarization_charge_Cm2
         phib = self.alloy.schottky_barrier_eV()
