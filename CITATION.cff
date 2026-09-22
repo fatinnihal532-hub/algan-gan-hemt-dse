@@ -1,0 +1,56 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "AlGaN/GaN HEMT Automated Design-Space Exploration Framework"
+authors:
+  - family-names: "Islam"
+    given-names: "Fatin Nihal"
+    affiliation: "Khulna University of Engineering & Technology (KUET)"
+date-released: 2026-09-22
+license: MIT
+repository-code: "https://github.com/fatinnihal532-hub/algan-gan-hemt-dse"
+keywords:
+  - AlGaN/GaN HEMT
+  - compact modelling
+  - polarization-induced 2DEG
+  - design-space exploration
+  - Pareto optimization
+  - power semiconductor devices
+references:
+  - type: article
+    authors:
+      - family-names: "Ambacher"
+        given-names: "O."
+    title: "Two-dimensional electron gases induced by spontaneous and piezoelectric polarization in undoped and doped AlGaN/GaN heterostructures"
+    journal: "Journal of Applied Physics"
+    volume: 85
+    year: 1999
+    pages: "3222-3233"
+  - type: article
+    authors:
+      - family-names: "Ambacher"
+        given-names: "O."
+    title: "Pyroelectric properties of Al(In)GaN/GaN hetero- and quantum well structures"
+    journal: "Journal of Physics: Condensed Matter"
+    volume: 14
+    year: 2002
+    pages: "3399-3434"
+  - type: article
+    authors:
+      - family-names: "Vurgaftman"
+        given-names: "I."
+      - family-names: "Meyer"
+        given-names: "J. R."
+    title: "Band parameters for nitrogen-containing semiconductors"
+    journal: "Journal of Applied Physics"
+    volume: 89
+    year: 2001
+    pages: "5815-5875"
+  - type: article
+    authors:
+      - family-names: "Baliga"
+        given-names: "B. J."
+    title: "Power semiconductor device figure of merit for high-frequency applications"
+    journal: "IEEE Electron Device Letters"
+    volume: 10
+    year: 1989
+    pages: "455-457"
