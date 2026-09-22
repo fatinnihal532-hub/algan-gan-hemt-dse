@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   test:
@@ -18,9 +23,38 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -r requirements.txt
-      - name: Run physics/theory checks
+      - name: Check the model against theory
         run: python3 verify.py
       - name: Run unit tests
         run: python3 -m unittest discover -s tests -v
       - name: Regenerate all figures and CSVs
         run: python3 make_figures.py
+
+  # Every figure and CSV in results/ is produced here, by the code at this
+  # commit, and committed back by the workflow -- none is uploaded by hand.
+  # (Pushes made with GITHUB_TOKEN do not trigger another workflow run.)
+  publish-results:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python3 make_figures.py
+      - name: Commit regenerated results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/
+          if git diff --cached --quiet; then
+            echo "results/ already up to date"
+          else
+            git commit -m "Regenerate results/ from ${GITHUB_SHA::7}"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
