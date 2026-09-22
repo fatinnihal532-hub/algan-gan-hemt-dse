@@ -15,10 +15,10 @@ Two effects that a 1D charge-control model cannot capture without a full
 2D (TCAD) solve -- subthreshold-swing degradation and drain-induced
 barrier lowering (DIBL) as the gate shrinks relative to the barrier
 thickness -- are added as clearly-labelled empirical proxies keyed to the
-aspect ratio d_eff/Lg, which is the same "natural length" idea used in
-rigorous short-channel scaling theory (e.g. Frank et al., "Monte Carlo
-simulation of a 30 nm dual-gate MOSFET," IEDM 1992) without repeating its
-full derivation. These proxies are the explicitly-approximate part of the
+aspect ratio d_eff/Lg, which is the same "scale length" idea used in
+rigorous short-channel scaling theory (Yan, Ourmazd and Lee, "Scaling the
+Si MOSFET: from bulk to SOI to bulk," IEEE Trans. Electron Devices 39,
+1704 (1992)) without repeating its full derivation. These proxies are the explicitly-approximate part of the
 model; everything upstream of them (polarization charge, Vth0, velocity
 saturation) is closed-form device physics.
 
