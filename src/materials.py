@@ -47,8 +47,8 @@ PSP_GAN, PSP_ALN, PSP_BOW = -0.029, -0.081, -0.021
 # Conduction-band effective mass (in-plane, GaN 2DEG), in units of m0
 M_STAR_GAN = 0.22
 # Conduction-band offset fraction of the bandgap difference that appears
-# as a barrier for electrons (commonly-used approximation, see e.g.
-# Ambacher 1999 Sec. IV): DeltaEc = 0.7 * DeltaEg
+# as a barrier for electrons -- the commonly used 70/30 split of the
+# AlGaN/GaN band offset: DeltaEc = 0.7 * DeltaEg
 DELTA_EC_FRACTION = 0.70
 
 
@@ -90,7 +90,7 @@ class AlGaN:
     @property
     def piezo_polarization_Cm2(self) -> float:
         """Piezoelectric polarization (C/m^2) of AlGaN pseudomorphically
-        strained in-plane to relaxed GaN (Ambacher 1999, Eq. 6)."""
+        strained in-plane to relaxed GaN (Ambacher 1999)."""
         a = self.lattice_a_m
         c13 = _lerp(self.x, C13_GAN, C13_ALN)
         c33 = _lerp(self.x, C33_GAN, C33_ALN)
