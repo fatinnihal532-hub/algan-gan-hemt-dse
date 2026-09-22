@@ -1,0 +1,11 @@
+parameter,value,unit
+vth_V,-6.311999401407721,V
+gm_max_S_per_mm,0.4092148886789896,S/mm
+ss_mV_per_dec,63.43136309653269,mV/dec
+dibl_mV_per_V,49.20000000000004,mV/V
+ion_A_per_mm,1.2894197198631256,A/mm
+ioff_A_per_mm,1e-06,A/mm
+ion_ioff_ratio,1289419.7198631256,-
+ron_sp_ohm_mm,1.0167932666276274,Ohm.mm
+breakdown_V,660.0,V
+baliga_fom_V2_per_ohm_mm,428405.669369491,V^2/(Ohm.mm)
