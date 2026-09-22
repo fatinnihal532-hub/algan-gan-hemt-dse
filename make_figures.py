@@ -130,6 +130,40 @@ def fig_ss_dibl_vs_length(theme, rows):
     return fig
 
 
+def fig_cross_section(theme):
+    """Schematic (not to scale) of the modelled device, labelling the four
+    swept parameters on the structure they belong to."""
+    from matplotlib.patches import Rectangle, FancyArrowPatch
+    fig, ax = plt.subplots(figsize=(6.4, 3.3))
+    ink, sec, s = theme["ink"], theme["secondary"], theme["series"]
+    # layers (x: 0..10 arbitrary units; y: 0..5)
+    ax.add_patch(Rectangle((0, 0.0), 10, 1.9, fc=s[0], alpha=0.16, ec=theme["axis"]))
+    ax.text(5, 0.8, "GaN buffer (relaxed)", ha="center", va="center", color=ink, fontsize=9)
+    ax.add_patch(Rectangle((0, 1.9), 10, 0.9, fc=s[1], alpha=0.22, ec=theme["axis"]))
+    ax.text(9.85, 2.35, "Al$_x$Ga$_{1-x}$N barrier (strained)", ha="right", va="center", color=ink, fontsize=8.5)
+    ax.plot([0, 10], [1.82, 1.82], color=s[2], lw=2.2, ls=(0, (4, 2)))
+    ax.text(0.15, 1.55, "2DEG (polarization-induced)", ha="left", va="center", color=s[2], fontsize=8.5)
+    # contacts: source, gate, drain
+    src, gate, drn = (0.3, 1.6), (3.1, 0.9), (8.1, 1.6)
+    for (x0, w), label in [(src, "S"), (gate, "G"), (drn, "D")]:
+        ax.add_patch(Rectangle((x0, 2.8), w, 0.7, fc=theme["surface"], ec=ink, lw=1.2))
+        ax.text(x0 + w / 2, 3.15, label, ha="center", va="center", color=ink, fontsize=9, weight="bold")
+
+    def dim(x0, x1, y, text):
+        ax.add_patch(FancyArrowPatch((x0, y), (x1, y), arrowstyle="<->", mutation_scale=9, color=sec, lw=1))
+        ax.text((x0 + x1) / 2, y + 0.18, text, ha="center", va="bottom", color=ink, fontsize=8.5)
+    sg_end, g_end = src[0] + src[1], gate[0] + gate[1]
+    dim(sg_end, gate[0], 3.95, "$L_{SG}$ (fixed 1 um)")
+    dim(gate[0], g_end, 4.55, "$L_g$")
+    dim(g_end, drn[0], 3.95, "$L_{GD}$  (sets BV, costs $R_{on}$)")
+    ax.add_patch(FancyArrowPatch((g_end + 0.25, 1.9), (g_end + 0.25, 2.8), arrowstyle="<->", mutation_scale=8, color=sec, lw=1))
+    ax.text(g_end + 0.38, 2.35, "d", ha="left", va="center", color=ink, fontsize=9)
+    ax.set_xlim(0, 10); ax.set_ylim(0, 5.1); ax.axis("off")
+    ax.set_title("Modelled structure and swept parameters (schematic, not to scale)", fontsize=10)
+    fig.tight_layout()
+    return fig
+
+
 def write_csv(path, rows, fieldnames):
     with open(path, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
@@ -169,6 +203,7 @@ def main():
         ]:
             w.writerow([field, getattr(ref, field), unit])
 
+    save_light_dark(fig_cross_section, "device_cross_section")
     save_light_dark(fig_output_iv, "output_characteristics")
     save_light_dark(fig_transfer, "transfer_characteristic")
     save_light_dark(lambda th: fig_ron_bv_pareto(th, rows, front), "ron_bv_pareto")
